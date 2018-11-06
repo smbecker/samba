@@ -2973,6 +2973,7 @@ sub provision($$)
 
 [notify_priv]
 	copy = tmp
+	honor change notify privilege = yes
 	";
 
 	close(CONF);
