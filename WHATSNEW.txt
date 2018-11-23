@@ -1092,6 +1092,15 @@ https://www.samba.org/samba/security/CVE-2020-1472.html.
 
 NEW FEATURES/CHANGES
 ====================
+- bind DLZ: Added the ability to set allow/deny lists for zone
+  transfer clients.
+  Up to now, any client could use a DNS zone transfer request
+  to the bind server, and get an answer from Samba.
+  Now the default behaviour will be to deny those request.
+  Two new options have been added to manage the list of
+  authorized/denied clients for zone transfer requests.
+  In order to be accepted, the request must be issued by a client
+  that is in the allow list and NOT in the deny list.
 
 Python 3.6 or later required
 ----------------------------
