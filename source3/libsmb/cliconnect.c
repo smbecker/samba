@@ -2807,7 +2807,10 @@ static struct tevent_req *cli_start_connection_send(
 	}
 
 	if (flags & CLI_FULL_CONNECTION_FORCE_SMB1) {
-		state->max_protocol = MIN(state->max_protocol, PROTOCOL_NT1);
+		state->max_protocol = MIN(state->max_protocol,
+					  PROTOCOL_NT1);
+		state->min_protocol = MIN(state->min_protocol,
+					  state->max_protocol);
 	}
 
 	if (flags & CLI_FULL_CONNECTION_DISABLE_SMB1) {
