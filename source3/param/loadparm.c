@@ -962,6 +962,8 @@ static void init_globals(struct loadparm_context *lp_ctx, bool reinit_globals)
 
 	Globals.min_domain_uid = 1000;
 
+	Globals.client_smb_encrypt = SMB_ENCRYPTION_DEFAULT;
+
 	/* Now put back the settings that were set with lp_set_cmdline() */
 	apply_lp_set_cmdline();
 }
