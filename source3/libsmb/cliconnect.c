@@ -3535,8 +3535,7 @@ NTSTATUS cli_full_connection_creds(struct cli_state **output_cli,
 				   const struct sockaddr_storage *dest_ss, int port,
 				   const char *service, const char *service_type,
 				   struct cli_credentials *creds,
-				   int flags,
-				   enum smb_signing_setting signing_state)
+				   int flags)
 {
 	struct tevent_context *ev;
 	struct tevent_req *req;
@@ -3693,8 +3692,7 @@ struct cli_state *get_ipc_connect(char *server,
 
 	nt_status = cli_full_connection_creds(&cli, NULL, server, server_ss, 0, "IPC$", "IPC",
 					get_cmdline_auth_info_creds(user_info),
-					flags,
-					SMB_SIGNING_DEFAULT);
+					flags);
 
 	if (NT_STATUS_IS_OK(nt_status)) {
 		return cli;

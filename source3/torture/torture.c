@@ -345,8 +345,7 @@ static bool torture_open_connection_share(struct cli_state **c,
 					   sharename,
 					   "?????",
 					   torture_creds,
-					   flags,
-					   signing_state);
+					   flags);
 	if (!NT_STATUS_IS_OK(status)) {
 		printf("failed to open share connection: //%s/%s port:%d - %s\n",
 			hostname, sharename, port_to_use, nt_errstr(status));
@@ -1528,8 +1527,7 @@ static bool run_tcon_devtype_test(int dummy)
 					   NULL, /* service */
 					   NULL, /* service_type */
 					   torture_creds,
-					   flags,
-					   signing_state);
+					   flags);
 
 	if (!NT_STATUS_IS_OK(status)) {
 		printf("could not open connection\n");
