@@ -1151,6 +1151,12 @@ A number of smb.conf parameters for less-secure authentication methods
 which are only possible over SMBv1 are deprecated in this release.
 
 
+The "ldap ssl ads" option no longer depends on "ldap ssl" option:
+-----------------------------------------------------------------
+With this release, the "ldap ssl ads" can be set to "yes" even if "ldap ssl"
+is off.
+
+
 REMOVED FEATURES
 ================
 
