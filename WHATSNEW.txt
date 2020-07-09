@@ -1269,7 +1269,7 @@ o  Martin Schwenke <martin@meltin.net>
 KNOWN ISSUES
 ============
 
-https://wiki.samba.org/index.php/Release_Planning_for_Samba_4.13#Release_blocking_bugs
+https://wiki.samba.org/index.php/Release_Planning_for_Samba_4.14#Release_blocking_bugs
 
 
 #######################################
