@@ -2970,6 +2970,9 @@ sub provision($$)
 	path = $prefix_abs/share
 	vfs objects =
 	server smb encrypt = off
+
+[notify_priv]
+	copy = tmp
 	";
 
 	close(CONF);
