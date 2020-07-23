@@ -1309,27 +1309,6 @@ static int fruit_connect(vfs_handle_struct *handle,
 	return rc;
 }
 
-static int fruit_fake_fd(void)
-{
-	int pipe_fds[2];
-	int fd;
-	int ret;
-
-	/*
-	 * Return a valid fd, but ensure any attempt to use it returns
-	 * an error (EPIPE). Once we get a write on the handle, we open
-	 * the real fd.
-	 */
-	ret = pipe(pipe_fds);
-	if (ret != 0) {
-		return -1;
-	}
-	fd = pipe_fds[0];
-	close(pipe_fds[1]);
-
-	return fd;
-}
-
 static int fruit_open_meta_stream(vfs_handle_struct *handle,
 				  const struct files_struct *dirfsp,
 				  const struct smb_filename *smb_fname,
@@ -1366,7 +1345,7 @@ static int fruit_open_meta_stream(vfs_handle_struct *handle,
 		return -1;
 	}
 
-	fd = fruit_fake_fd();
+	fd = vfs_fake_fd();
 	if (fd == -1) {
 		VFS_REMOVE_FSP_EXTENSION(handle, fsp);
 		return -1;
@@ -1406,7 +1385,7 @@ static int fruit_open_meta_netatalk(vfs_handle_struct *handle,
 		return -1;
 	}
 
-	fd = fruit_fake_fd();
+	fd = vfs_fake_fd();
 	if (fd == -1) {
 		return -1;
 	}
