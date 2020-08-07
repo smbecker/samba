@@ -30,6 +30,8 @@
 #include "rpc_common.h"
 #include "lib/util/bitmap.h"
 
+#undef strncasecmp
+
 /* we need to be able to get/set the fragment length without doing a full
    decode */
 void dcerpc_set_frag_length(DATA_BLOB *blob, uint16_t v)
