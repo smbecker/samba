@@ -609,6 +609,7 @@ static void ldapsrv_call_read_done(struct tevent_req *subreq)
 	}
 
 	data_blob_free(&blob);
+	TALLOC_FREE(asn1);
 
 
 	/* queue the call in the global queue */
