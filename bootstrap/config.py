@@ -134,7 +134,7 @@ PKGS = [
     ('python3-cryptography', 'python3-cryptography'), # for krb5 tests
     ('python3-dev', 'python3-devel'),
     ('python3-dbg', ''),
-    ('python3-iso8601', ''),
+    ('python3-iso8601', 'python3-iso8601'),
     ('python3-gpg', 'python3-gpg'),  # defaults to ubuntu/fedora latest
     ('python3-markdown', 'python3-markdown'),
     ('python3-matplotlib', ''),
@@ -395,7 +395,6 @@ DEB_DISTS = {
         'docker_image': 'ubuntu:16.04',
         'vagrant_box': 'ubuntu/xenial64',
         'replace': {
-            'python-gpg': 'python-gpgme',
             'python3-gpg': 'python3-gpgme',
             'glusterfs-common': '',
             'libcephfs-dev': '',
@@ -510,7 +509,6 @@ RPM_DISTS = {
             'perl-generators': '',
             'perl-interpreter': '',
             'procps-ng': 'procps',
-            'python-dns': 'python2-dnspython',
             'python3-dns': 'python3-dnspython',
             'python3-markdown': 'python3-Markdown',
             'quota-devel': '',
@@ -542,7 +540,6 @@ RPM_DISTS = {
             'perl-generators': '',
             'perl-interpreter': '',
             'procps-ng': 'procps',
-            'python-dns': 'python2-dnspython',
             'python3-dns': 'python3-dnspython',
             'python3-markdown': 'python3-Markdown',
             'quota-devel': '',
