@@ -3004,7 +3004,8 @@ The users gecos field will be set to 'User4 test'
             if unix_domain is None:
                 raise CommandError('Unable to find Unix domain')
 
-            unix_home = "/home/{0}/{1}".format(unix_domain, username)
+            tmpl = lp.get('template homedir')
+            unix_home = tmpl.replace('%D', unix_domain).replace('%U', username)
 
         if not lp.get("idmap_ldb:use rfc2307"):
             self.outf.write("You are setting a Unix/RFC2307 UID & GID. "
