@@ -311,7 +311,6 @@ static NTSTATUS cli_cm_connect(TALLOC_CTX *ctx,
 			       const char *server,
 			       const char *share,
 			       struct cli_credentials *creds,
-			       int max_protocol,
 			       const struct sockaddr_storage *dest_ss,
 			       int port,
 			       int name_type,
@@ -322,7 +321,7 @@ static NTSTATUS cli_cm_connect(TALLOC_CTX *ctx,
 
 	status = do_connect(ctx, server, share,
 				creds,
-				max_protocol,
+				lp_client_max_protocol(),
 				dest_ss, port, name_type, &cli);
 
 	if (!NT_STATUS_IS_OK(status)) {
@@ -434,7 +433,6 @@ NTSTATUS cli_cm_open(TALLOC_CTX *ctx,
 				server,
 				share,
 				creds,
-				lp_client_max_protocol(),
 				dest_ss,
 				port,
 				name_type,
@@ -1038,7 +1036,6 @@ NTSTATUS cli_resolve_path(TALLOC_CTX *ctx,
 				dfs_refs[count].server,
 				dfs_refs[count].share,
 				creds,
-				smbXcli_conn_protocol(rootcli->conn),
 				NULL, /* dest_ss */
 				0, /* port */
 				0x20,
