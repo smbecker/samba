@@ -766,6 +766,22 @@ o  Andreas Schneider <asn@samba.org>
    * BUG 15146: Backport fileserver related changed to 4.17.0rc2
 
 
+CHANGES SINCE 4.13.0rc2
+=======================
+
+o  Andrew Bartlett <abartlet@samba.org>
+   * BUG 14460: Deprecate domain logons, SMBv1 things.
+
+o  Günther Deschner <gd@samba.org>
+   * BUG 14318: docs: Add missing winexe manpage.
+
+o  Christof Schmitt <cs@samba.org>
+   * BUG 14166: util: Allow symlinks in directory_create_or_exist.
+
+o  Martin Schwenke <martin@meltin.net>
+   * BUG 14466: ctdb disable/enable can fail due to race condition.
+
+
 CHANGES SINCE 4.13.0rc1
 =======================
 
