@@ -264,7 +264,7 @@ static NTSTATUS do_connect(TALLOC_CTX *ctx,
 	if (smbXcli_conn_dfs_supported(c->conn) &&
 			cli_check_msdfs_proxy(ctx, c, sharename,
 				&newserver, &newshare,
-				force_encrypt, creds)) {
+				creds)) {
 		cli_shutdown(c);
 		return do_connect(ctx, newserver,
 				newshare, auth_info,
@@ -1200,7 +1200,6 @@ bool cli_check_msdfs_proxy(TALLOC_CTX *ctx,
 				const char *sharename,
 				char **pp_newserver,
 				char **pp_newshare,
-				bool force_encrypt,
 				struct cli_credentials *creds)
 {
 	struct client_dfs_referral *refs = NULL;
@@ -1212,6 +1211,8 @@ bool cli_check_msdfs_proxy(TALLOC_CTX *ctx,
 	char *newextrapath = NULL;
 	NTSTATUS status;
 	const char *remote_name;
+	enum smb_encryption_setting encryption_state =
+		cli_credentials_get_smb_encryption(creds);
 
 	if (!cli || !sharename) {
 		return false;
@@ -1247,7 +1248,7 @@ bool cli_check_msdfs_proxy(TALLOC_CTX *ctx,
 		return false;
 	}
 
-	if (force_encrypt) {
+	if (encryption_state >= SMB_ENCRYPTION_DESIRED) {
 		status = cli_cm_force_encryption_creds(cli, creds, "IPC$");
 		if (!NT_STATUS_IS_OK(status)) {
 			cli_tdis(cli);
