@@ -131,7 +131,6 @@ static NTSTATUS do_connect(TALLOC_CTX *ctx,
 					const char *server,
 					const char *share,
 					struct cli_credentials *creds,
-					int max_protocol,
 					const struct sockaddr_storage *dest_ss,
 					int port,
 					int name_type,
@@ -191,14 +190,11 @@ static NTSTATUS do_connect(TALLOC_CTX *ctx,
 		return status;
 	}
 
-	if (max_protocol == 0) {
-		max_protocol = PROTOCOL_LATEST;
-	}
 	DEBUG(4,(" session request ok\n"));
 
 	status = smbXcli_negprot(c->conn, c->timeout,
 				 lp_client_min_protocol(),
-				 max_protocol);
+				 lp_client_max_protocol());
 
 	if (!NT_STATUS_IS_OK(status)) {
 		d_printf("protocol negotiation failed: %s\n",
@@ -267,7 +263,6 @@ static NTSTATUS do_connect(TALLOC_CTX *ctx,
 		cli_shutdown(c);
 		return do_connect(ctx, newserver,
 				newshare, creds,
-				max_protocol,
 				NULL, port, name_type, pcli);
 	}
 
@@ -321,7 +316,6 @@ static NTSTATUS cli_cm_connect(TALLOC_CTX *ctx,
 
 	status = do_connect(ctx, server, share,
 				creds,
-				lp_client_max_protocol(),
 				dest_ss, port, name_type, &cli);
 
 	if (!NT_STATUS_IS_OK(status)) {
