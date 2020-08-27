@@ -131,7 +131,6 @@ static NTSTATUS do_connect(TALLOC_CTX *ctx,
 					const char *server,
 					const char *share,
 					const struct user_auth_info *auth_info,
-					bool force_encrypt,
 					int max_protocol,
 					const struct sockaddr_storage *dest_ss,
 					int port,
@@ -147,6 +146,8 @@ static NTSTATUS do_connect(TALLOC_CTX *ctx,
 	enum protocol_types protocol = PROTOCOL_NONE;
 	int signing_state = get_cmdline_auth_info_signing_state(auth_info);
 	struct cli_credentials *creds = NULL;
+	bool force_encrypt =
+		get_cmdline_auth_info_smb_encrypt(auth_info);
 
 	if (force_encrypt) {
 		signing_state = SMB_SIGNING_REQUIRED;
@@ -267,7 +268,7 @@ static NTSTATUS do_connect(TALLOC_CTX *ctx,
 		cli_shutdown(c);
 		return do_connect(ctx, newserver,
 				newshare, auth_info,
-				force_encrypt, max_protocol,
+				max_protocol,
 				NULL, port, name_type, pcli);
 	}
 
@@ -319,12 +320,10 @@ static NTSTATUS cli_cm_connect(TALLOC_CTX *ctx,
 {
 	struct cli_state *cli = NULL;
 	NTSTATUS status;
-	bool force_encrypt =
-		get_cmdline_auth_info_smb_encrypt(auth_info);
 
 	status = do_connect(ctx, server, share,
 				auth_info,
-				force_encrypt, max_protocol,
+				max_protocol,
 				dest_ss, port, name_type, &cli);
 
 	if (!NT_STATUS_IS_OK(status)) {
