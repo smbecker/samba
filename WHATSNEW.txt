@@ -766,6 +766,22 @@ o  Andreas Schneider <asn@samba.org>
    * BUG 15146: Backport fileserver related changed to 4.17.0rc2
 
 
+CHANGES SINCE 4.13.0rc3
+=======================
+
+o  David Disseldorp <ddiss@samba.org>
+   * BUG 14437: build: Toggle vfs_snapper using "--with-shared-modules".
+
+o  Volker Lendecke <vl@samba.org>
+   * BUG 14465: idmap_ad does not deal properly with a RFC4511 section 4.4.1
+     response.
+
+o  Stefan Metzmacher <metze@samba.org>
+   * BUG 14428: PANIC: Assert failed in get_lease_type().
+   * BUG 14465: idmap_ad does not deal properly with a RFC4511 section 4.4.1
+     response.
+
+
 CHANGES SINCE 4.13.0rc2
 =======================
 
