@@ -2927,6 +2927,11 @@ sub provision($$)
 	path = $prefix_abs/share
 	vfs objects =
 	server smb encrypt = desired
+
+[enc_off]
+	path = $prefix_abs/share
+	vfs objects =
+	server smb encrypt = off
 	";
 
 	close(CONF);
