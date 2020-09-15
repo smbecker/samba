@@ -766,6 +766,20 @@ o  Andreas Schneider <asn@samba.org>
    * BUG 15146: Backport fileserver related changed to 4.17.0rc2
 
 
+CHANGES SINCE 4.13.0rc4
+=======================
+
+o  Andreas Schneider <asn@samba.org>
+   * BUG 14399: waf: Only use gnutls_aead_cipher_encryptv2() for GnuTLS >
+     3.6.14.
+   * BUG 14467: s3:smbd: Fix %U substitutions if it contains a domain name.
+   * BUG 14479: The created krb5.conf for 'net ads join' doesn't have a domain
+     entry.
+
+o  Stefan Metzmacher <metze@samba.org>
+   * BUG 14482: Fix build problem if libbsd-dev is not installed.
+
+
 CHANGES SINCE 4.13.0rc3
 =======================
 
