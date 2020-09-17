@@ -1169,6 +1169,7 @@ static PyObject *py_dsdb_allocate_rid(PyObject *self, PyObject *args)
 	return PyLong_FromLong(rid);
 }
 
+#ifdef AD_DC_BUILD_IS_ENABLED
 static PyObject *py_dns_delete_tombstones(PyObject *self, PyObject *args)
 {
 	PyObject *py_ldb;
@@ -1334,6 +1335,7 @@ static PyObject *py_dsdb_garbage_collect_tombstones(PyObject *self, PyObject *ar
 	return Py_BuildValue("(II)", num_objects_removed,
 			    num_links_removed);
 }
+#endif
 
 static PyObject *py_dsdb_load_udv_v2(PyObject *self, PyObject *args)
 {
@@ -1491,6 +1493,7 @@ static PyMethodDef py_dsdb_methods[] = {
 	{ "_dsdb_get_wellknown_dn", (PyCFunction)py_dsdb_get_wellknown_dn, METH_VARARGS, NULL },
 	{ "_dsdb_DsReplicaAttribute", (PyCFunction)py_dsdb_DsReplicaAttribute, METH_VARARGS, NULL },
 	{ "_dsdb_normalise_attributes", (PyCFunction)py_dsdb_normalise_attributes, METH_VARARGS, NULL },
+#ifdef AD_DC_BUILD_IS_ENABLED
 	{ "_dsdb_garbage_collect_tombstones", (PyCFunction)py_dsdb_garbage_collect_tombstones, METH_VARARGS,
 		"_dsdb_kcc_check_deleted(samdb, [dn], current_time, tombstone_lifetime)"
 		" -> (num_objects_expunged, num_links_expunged)" },
@@ -1498,6 +1501,7 @@ static PyMethodDef py_dsdb_methods[] = {
 		METH_VARARGS, NULL},
 	{ "_dns_delete_tombstones", (PyCFunction)py_dns_delete_tombstones,
 		METH_VARARGS, NULL},
+#endif
 	{ "_dsdb_create_own_rid_set", (PyCFunction)py_dsdb_create_own_rid_set, METH_VARARGS,
 		"_dsdb_create_own_rid_set(samdb)"
 		" -> None" },
