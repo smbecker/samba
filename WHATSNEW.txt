@@ -672,6 +672,10 @@ The storage and authentication with LanMan passwords has been entirely
 removed from the Samba AD DC, even when "lanman auth = yes" is set.
 
 
+The deprecated "server schannel" smb.conf option will very likely
+removed in the final 4.13.0 release.
+
+
 smb.conf changes
 ================
 
