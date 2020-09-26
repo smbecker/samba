@@ -1487,10 +1487,10 @@ static int fruit_open_rsrc_adouble(vfs_handle_struct *handle,
 			goto exit;
 		}
 
-		fsp->fh->fd = hostfd;
+		fsp_set_fd(fsp, hostfd);
 
 		rc = ad_fset(handle, ad, fsp);
-		fsp->fh->fd = -1;
+		fsp_set_fd(fsp, -1);
 		if (rc != 0) {
 			rc = -1;
 			goto exit;
@@ -1511,7 +1511,7 @@ exit:
 			 * fd_close_posix here, but we don't have a
 			 * full fsp yet
 			 */
-			fsp->fh->fd = hostfd;
+			fsp_set_fd(fsp, hostfd);
 			SMB_VFS_CLOSE(fsp);
 		}
 		hostfd = -1;
@@ -2485,7 +2485,7 @@ static ssize_t fruit_pwrite_meta_stream(vfs_handle_struct *handle,
 				fsp_str_dbg(fsp), strerror(errno));
 			return -1;
 		}
-		fsp->fh->fd = fd;
+		fsp_set_fd(fsp, fd);
 		fio->fake_fd = false;
 	}
 
