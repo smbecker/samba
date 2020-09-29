@@ -865,14 +865,14 @@ static NTSTATUS dfs_redirect(TALLOC_CTX *ctx,
 			const char *path_in,
 			uint32_t ucf_flags,
 			bool allow_broken_path,
-			char **pp_path_out,
-			bool *ppath_contains_wcard)
+			char **pp_path_out)
 {
 	const struct loadparm_substitution *lp_sub =
 		loadparm_s3_global_substitution();
 	NTSTATUS status;
 	bool search_wcard_flag = (ucf_flags & UCF_ALWAYS_ALLOW_WCARD_LCOMP);
 	struct dfs_path *pdp = talloc(ctx, struct dfs_path);
+	bool ignore = false;
 
 	if (!pdp) {
 		return NT_STATUS_NO_MEMORY;
@@ -880,7 +880,7 @@ static NTSTATUS dfs_redirect(TALLOC_CTX *ctx,
 
 	status = parse_dfs_path(conn, path_in, search_wcard_flag,
 				allow_broken_path, pdp,
-			ppath_contains_wcard);
+			&ignore);
 	if (!NT_STATUS_IS_OK(status)) {
 		TALLOC_FREE(pdp);
 		return status;
@@ -1859,7 +1859,6 @@ NTSTATUS resolve_dfspath_wcard(TALLOC_CTX *ctx,
 				bool allow_broken_path,
 				char **pp_name_out)
 {
-	bool ignore = false;
 	NTSTATUS status = NT_STATUS_OK;
 
 	status = dfs_redirect(ctx,
@@ -1867,7 +1866,6 @@ NTSTATUS resolve_dfspath_wcard(TALLOC_CTX *ctx,
 				name_in,
 				ucf_flags,
 				allow_broken_path,
-				pp_name_out,
-				&ignore);
+				pp_name_out);
 	return status;
 }
