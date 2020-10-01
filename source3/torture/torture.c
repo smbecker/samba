@@ -8046,7 +8046,6 @@ static bool run_acl_symlink_test(int dummy)
 	char *posix_acl_sym = NULL;
 	size_t posix_acl_len_sym = 0;
 	struct security_descriptor *sd = NULL;
-	struct security_descriptor *sd_sym = NULL;
 	TALLOC_CTX *frame = NULL;
 
 	frame = talloc_stackframe();
@@ -8151,7 +8150,7 @@ static bool run_acl_symlink_test(int dummy)
 		goto out;
 	}
 
-	/* Open a handle on the symlink. */
+	/* Try a stat-open on the symlink, should also fail. */
 	status = cli_ntcreate(cli,
 			sname,
 			0,
@@ -8164,23 +8163,8 @@ static bool run_acl_symlink_test(int dummy)
 			&fnum,
 			NULL);
 
-	if (!NT_STATUS_IS_OK(status)) {
-		printf("cli_posix_open of %s failed (%s)\n",
-			sname,
-			nt_errstr(status));
-		goto out;
-	}
-
-	/* Get the Windows ACL on the symlink handle. Should fail */
-	status = cli_query_secdesc(cli,
-				fnum,
-				frame,
-				&sd_sym);
-
-	if (!NT_STATUS_EQUAL(status, NT_STATUS_ACCESS_DENIED)) {
-		printf("cli_query_secdesc on a symlink gave %s. "
-			"Should be NT_STATUS_ACCESS_DENIED.\n",
-			nt_errstr(status));
+	if (NT_STATUS_IS_OK(status)) {
+		printf("Stat-open of symlink succeeded (should fail)\n");
 		goto out;
 	}
 
@@ -8193,19 +8177,6 @@ static bool run_acl_symlink_test(int dummy)
 
 	if (!NT_STATUS_EQUAL(status, NT_STATUS_ACCESS_DENIED)) {
 		printf("cli_posix_getacl on a symlink gave %s. "
-			"Should be NT_STATUS_ACCESS_DENIED.\n",
-			nt_errstr(status));
-		goto out;
-	}
-
-	/* Set the Windows ACL on the symlink handle. Should fail */
-	status = cli_set_security_descriptor(cli,
-				fnum,
-				SECINFO_DACL,
-				sd);
-
-	if (!NT_STATUS_EQUAL(status, NT_STATUS_ACCESS_DENIED)) {
-		printf("cli_query_secdesc on a symlink gave %s. "
 			"Should be NT_STATUS_ACCESS_DENIED.\n",
 			nt_errstr(status));
 		goto out;
