@@ -35,6 +35,7 @@
 #include "dsdb/kcc/scavenge_dns_records.h"
 #include "libds/common/flag_mapping.h"
 
+#undef strcasecmp
 
 /* FIXME: These should be in a header file somewhere */
 #define PyErr_LDB_OR_RAISE(py_ldb, ldb) \
