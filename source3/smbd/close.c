@@ -1252,7 +1252,7 @@ static NTSTATUS close_directory(struct smb_request *req, files_struct *fsp,
 
 	if (!NT_STATUS_IS_OK(status1)) {
 		DEBUG(0, ("Could not close dir! fname=%s, fd=%d, err=%d=%s\n",
-			  fsp_str_dbg(fsp), fsp->fh->fd, errno,
+			  fsp_str_dbg(fsp), fsp_get_pathref_fd(fsp), errno,
 			  strerror(errno)));
 	}
 
