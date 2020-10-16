@@ -240,7 +240,7 @@ sub check_env($$)
 	ad_member_fips      => ["ad_dc_fips"],
 	ad_member_no_nss_wb => ["ad_dc"],
 
-	clusteredmember_smb1 => ["nt4_dc"],
+	clusteredmember => ["nt4_dc"],
 );
 
 %Samba3::ENV_DEPS_POST = ();
@@ -466,7 +466,7 @@ sub setup_nt4_member
 	return $ret;
 }
 
-sub setup_clusteredmember_smb1
+sub setup_clusteredmember
 {
 	my ($self, $prefix, $nt4_dc_vars) = @_;
 	my $count = 0;
