@@ -1108,7 +1108,7 @@ static PyObject *py_cli_delete_on_close(struct py_cli_state *self,
 /*
  * Helper to add directory listing entries to an overall Python list
  */
-static NTSTATUS list_helper(const char *mntpoint, struct file_info *finfo,
+static NTSTATUS list_helper(struct file_info *finfo,
 			    const char *mask, void *state)
 {
 	PyObject *result = (PyObject *)state;
@@ -1151,8 +1151,7 @@ static NTSTATUS list_helper(const char *mntpoint, struct file_info *finfo,
 static NTSTATUS do_listing(struct py_cli_state *self,
 			   const char *base_dir, const char *user_mask,
 			   uint16_t attribute,
-			   NTSTATUS (*callback_fn)(const char *,
-						   struct file_info *,
+			   NTSTATUS (*callback_fn)(struct file_info *,
 						   const char *, void *),
 			   void *priv)
 {
@@ -1196,7 +1195,7 @@ static NTSTATUS do_listing(struct py_cli_state *self,
 
 	/* invoke the callback for the async results (SMBv1 connections) */
 	for (i = 0; i < num_finfos; i++) {
-		status = callback_fn(base_dir, &finfos[i], user_mask,
+		status = callback_fn(&finfos[i], user_mask,
 				     priv);
 		if (!NT_STATUS_IS_OK(status)) {
 			TALLOC_FREE(finfos);
@@ -1494,8 +1493,7 @@ static NTSTATUS delete_dir_tree(struct py_cli_state *self,
  * or a directory. This function gets invoked as a callback for every item in
  * the given directory's listings.
  */
-static NTSTATUS delete_tree_callback(const char *mntpoint,
-				     struct file_info *finfo,
+static NTSTATUS delete_tree_callback(struct file_info *finfo,
 				     const char *mask, void *priv)
 {
 	char *filepath = NULL;

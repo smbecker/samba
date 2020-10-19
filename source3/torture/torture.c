@@ -9664,7 +9664,7 @@ static bool run_openattrtest(int dummy)
 	return correct;
 }
 
-static NTSTATUS list_fn(const char *mnt, struct file_info *finfo,
+static NTSTATUS list_fn(struct file_info *finfo,
 		    const char *name, void *state)
 {
 	int *matched = (int *)state;
@@ -9737,7 +9737,7 @@ static bool run_dirtest(int dummy)
 	return correct;
 }
 
-static NTSTATUS del_fn(const char *mnt, struct file_info *finfo, const char *mask,
+static NTSTATUS del_fn(struct file_info *finfo, const char *mask,
 		   void *state)
 {
 	struct cli_state *pcli = (struct cli_state *)state;
@@ -10914,8 +10914,7 @@ static bool run_mangle1(int dummy)
 	return true;
 }
 
-static NTSTATUS mangle_illegal_list_shortname_fn(const char *mntpoint,
-						 struct file_info *f,
+static NTSTATUS mangle_illegal_list_shortname_fn(struct file_info *f,
 						 const char *mask,
 						 void *state)
 {
@@ -10932,8 +10931,7 @@ static NTSTATUS mangle_illegal_list_shortname_fn(const char *mntpoint,
 	return NT_STATUS_OBJECT_NAME_INVALID;
 }
 
-static NTSTATUS mangle_illegal_list_name_fn(const char *mntpoint,
-					    struct file_info *f,
+static NTSTATUS mangle_illegal_list_name_fn(struct file_info *f,
 					    const char *mask,
 					    void *state)
 {
@@ -11466,8 +11464,7 @@ static bool run_large_readx(int dummy)
 	return correct;
 }
 
-static NTSTATUS msdfs_attribute_list_fn(const char *mnt,
-				  struct file_info *finfo,
+static NTSTATUS msdfs_attribute_list_fn(struct file_info *finfo,
 				  const char *mask,
 				  void *private_data)
 {
@@ -11823,7 +11820,7 @@ static bool run_uid_regression_test(int dummy)
 static const char *illegal_chars = "*\\/?<>|\":";
 static char force_shortname_chars[] = " +,.[];=\177";
 
-static NTSTATUS shortname_del_fn(const char *mnt, struct file_info *finfo,
+static NTSTATUS shortname_del_fn(struct file_info *finfo,
 			     const char *mask, void *state)
 {
 	struct cli_state *pcli = (struct cli_state *)state;
@@ -11855,7 +11852,7 @@ struct sn_state {
 	bool val;
 };
 
-static NTSTATUS shortname_list_fn(const char *mnt, struct file_info *finfo,
+static NTSTATUS shortname_list_fn(struct file_info *finfo,
 			      const char *name, void *state)
 {
 	struct sn_state *s = (struct sn_state  *)state;
@@ -12662,8 +12659,7 @@ static bool run_symlink_open_test(int dummy)
 	return correct;
 }
 
-static NTSTATUS smb1_wild_mangle_list_fn(const char *mnt,
-					struct file_info *finfo,
+static NTSTATUS smb1_wild_mangle_list_fn(struct file_info *finfo,
 					const char *name,
 					void *state)
 {
