@@ -1197,6 +1197,7 @@ static NTSTATUS open_file(files_struct *fsp,
 			  mode_t unx_mode,
 			  uint32_t access_mask, /* client requested access mask. */
 			  uint32_t open_access_mask, /* what we're actually using in the open. */
+			  uint32_t private_flags,
 			  bool *p_file_created)
 {
 	connection_struct *conn = fsp->conn;
@@ -3726,6 +3727,7 @@ static NTSTATUS open_file_ntcreate(connection_struct *conn,
 			     unx_mode,
 			     access_mask,
 			     open_access_mask,
+			     private_flags,
 			     &new_file_created);
 	if (NT_STATUS_EQUAL(fsp_open, NT_STATUS_NETWORK_BUSY)) {
 		if (file_existed && S_ISFIFO(fsp->fsp_name->st.st_ex_mode)) {
