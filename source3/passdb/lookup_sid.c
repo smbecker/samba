@@ -79,50 +79,35 @@ bool lookup_name(TALLOC_CTX *mem_ctx,
 		 const char **ret_domain, const char **ret_name,
 		 struct dom_sid *ret_sid, enum lsa_SidType *ret_type)
 {
+	char *p;
 	const char *tmp;
 	const char *domain = NULL;
 	const char *name = NULL;
-	const char *realm = NULL;
 	uint32_t rid;
 	struct dom_sid sid;
 	enum lsa_SidType type;
 	TALLOC_CTX *tmp_ctx = talloc_new(mem_ctx);
-	struct cli_credentials *creds = NULL;
 
 	if (tmp_ctx == NULL) {
 		DEBUG(0, ("talloc_new failed\n"));
 		return false;
 	}
 
-	creds = cli_credentials_init(tmp_ctx);
-	if (creds == NULL) {
-		DEBUG(0, ("cli_credentials_init failed\n"));
-		return false;
+	p = strchr_m(full_name, '\\');
+
+	if (p != NULL) {
+		domain = talloc_strndup(tmp_ctx, full_name,
+					PTR_DIFF(p, full_name));
+		name = talloc_strdup(tmp_ctx, p+1);
+	} else {
+		domain = talloc_strdup(tmp_ctx, "");
+		name = talloc_strdup(tmp_ctx, full_name);
 	}
 
-	cli_credentials_parse_name(creds, full_name, CRED_SPECIFIED);
-	name = cli_credentials_get_username(creds);
-	domain = cli_credentials_get_domain(creds);
-	realm = cli_credentials_get_realm(creds);
-
-	/* At this point we have:
-	 * - name -- normal name or empty string
-	 * - domain -- either NULL or domain name
-	 * - realm -- either NULL or realm name
-	 *
-	 * domain and realm are exclusive to each other
-	 * the code below in lookup_name assumes domain
-	 * to be at least empty string, not NULL
-	*/
-
-	if (name == NULL) {
-		DEBUG(0, ("lookup_name with empty name, exit\n"));
+	if ((domain == NULL) || (name == NULL)) {
+		DEBUG(0, ("talloc failed\n"));
 		TALLOC_FREE(tmp_ctx);
 		return false;
-	}
-
-	if ((domain == NULL) && (realm == NULL)) {
-		domain = talloc_strdup(creds, "");
 	}
 
 	DEBUG(10,("lookup_name: %s => domain=[%s], name=[%s]\n",
@@ -150,15 +135,13 @@ bool lookup_name(TALLOC_CTX *mem_ctx,
 			TALLOC_FREE(dom_info);
 		}
 
-		if (check_global_sam) {
-			/* It's our own domain, lookup the name in passdb */
-			if (lookup_global_sam_name(name, flags, &rid, &type)) {
-				sid_compose(&sid, get_global_sam_sid(), rid);
-				goto ok;
-			}
-			TALLOC_FREE(tmp_ctx);
-			return false;
+		/* It's our own domain, lookup the name in passdb */
+		if (lookup_global_sam_name(name, flags, &rid, &type)) {
+			sid_compose(&sid, get_global_sam_sid(), rid);
+			goto ok;
 		}
+		TALLOC_FREE(tmp_ctx);
+		return false;
 	}
 
 	if ((flags & LOOKUP_NAME_BUILTIN) &&
