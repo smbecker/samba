@@ -113,6 +113,8 @@ if options.enable_coverage:
 else:
     LCOV_CMD = 'echo "lcov skipped since no --enable-coverage specified"'
 
+CLEAN_SOURCE_TREE_CMD = "cd ${TEST_SOURCE_DIR} && script/clean-source-tree.sh"
+
 if args:
     # If we are only running specific test,
     # do not sleep randomly to wait for it to start
@@ -198,7 +200,7 @@ tasks = {
             ("make", "make all"),
             ("install", "make install"),
             ("test", "make autotest"),
-            ("check-clean-tree", "../script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
         ],
     },
@@ -271,7 +273,7 @@ tasks = {
             ("test-slow-none", make_test(cmd='make test', TESTS="--include=selftest/slow-none", include_envs=["none"])),
             ("lcov", LCOV_CMD),
             ("install", "make install"),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
         ],
     },
@@ -335,7 +337,7 @@ tasks = {
             ])),
             ("lcov", LCOV_CMD),
             ("install", "make install"),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
         ],
     },
@@ -354,7 +356,7 @@ tasks = {
             "simpleserver",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
         ],
     },
@@ -373,7 +375,7 @@ tasks = {
                      # but is tested here against a system Heimdal
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -389,7 +391,7 @@ tasks = {
             "ad_member_rfc2307",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -429,7 +431,7 @@ tasks = {
             "ad_dc_no_ntlm",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -444,7 +446,7 @@ tasks = {
             "rodc",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -460,7 +462,7 @@ tasks = {
             "proclimitdc",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -476,7 +478,7 @@ tasks = {
             "fl2008r2dc",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -488,7 +490,7 @@ tasks = {
             ("test", make_test(include_envs=[
             "ad_dc_default", "ad_dc_default_smb1", "ad_dc_default_smb1_done"])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -499,7 +501,7 @@ tasks = {
             ("make", "make -j"),
             ("test", make_test(include_envs=["ad_dc_slowtests"])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -510,7 +512,7 @@ tasks = {
             ("make", "make -j"),
             ("test", make_test(include_envs=["schema_dc", "schema_pair_dc"])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -523,7 +525,7 @@ tasks = {
             ("make", "make -j"),
             ("test", make_test(include_envs=["ad_dc_ntvfs"])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -535,7 +537,7 @@ tasks = {
             ("make", "make -j"),
             ("test", make_test(include_envs=["ad_dc_fips", "ad_member_fips"])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -555,7 +557,7 @@ tasks = {
             "ad_dc_backup",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -571,7 +573,7 @@ tasks = {
             "ad_member_rfc2307",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -588,7 +590,7 @@ tasks = {
             "ad_dc_no_ntlm",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -604,7 +606,7 @@ tasks = {
             "fl2008r2dc",
             ])),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
 
@@ -653,7 +655,7 @@ tasks = {
             ("quicktest", make_test(cmd='make quicktest', include_envs=["ad_dc", "ad_dc_smb1", "ad_dc_smb1_done"])),
             ("lcov", LCOV_CMD),
             ("install", "make install"),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
         ],
     },
@@ -688,7 +690,7 @@ tasks = {
         ),
 
         # clean up:
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
             ("ctdb-clean", "cd ./ctdb && make clean"),
         ],
@@ -764,7 +766,7 @@ tasks = {
             ("find-python", "script/find_python.sh ${PREFIX}"),
             ("test", "make test-nopython"),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
 
             ("talloc-configure", "cd lib/talloc && " + samba_libs_configure_base + " --bundled-libraries=cmocka,NONE --disable-python"),
@@ -787,7 +789,7 @@ tasks = {
             ("libs-configure", samba_libs_configure_base + samba_libs_configure_bundled_libs + " --disable-python --without-ad-dc  --with-static-modules=!FORCED,!DEFAULT --with-shared-modules=!FORCED,!DEFAULT"),
             ("libs-make", "make -j"),
             ("libs-install", "make install"),
-            ("libs-check-clean-tree", "script/clean-source-tree.sh"),
+            ("libs-check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("libs-clean", "make clean"),
 
         ],
@@ -807,7 +809,7 @@ tasks = {
             ("test-no-lmdb", "make test"),
             ("lcov-no-lmdb", LCOV_CMD),
             ("install-no-lmdb", "make install"),
-            ("check-clean-tree", "../../script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("distcheck", "make distcheck"),
             ("clean", "make clean"),
         ],
@@ -821,7 +823,7 @@ tasks = {
             ("install", "make install"),
             ("test", "make test"),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "../../script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("distcheck", "make distcheck"),
             ("clean", "make clean"),
         ],
@@ -835,7 +837,7 @@ tasks = {
             ("install", "make install"),
             ("test", "make test"),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "../../script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("distcheck", "make distcheck"),
             ("clean", "make clean"),
         ],
@@ -849,7 +851,7 @@ tasks = {
             ("install", "make install"),
             ("test", "make test"),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "../../script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("distcheck", "make distcheck"),
             ("clean", "make clean"),
         ],
@@ -863,7 +865,7 @@ tasks = {
             ("install", "make install"),
             ("test", "make test"),
             ("lcov", LCOV_CMD),
-            ("check-clean-tree", "../../script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("distcheck", "make distcheck"),
             ("clean", "make clean"),
         ],
@@ -879,7 +881,7 @@ tasks = {
             ("test", "make test"),
             ("install", "make install"),
             ("checkout-yapp-generated", "git checkout lib/Parse/Pidl/IDL.pm lib/Parse/Pidl/Expr.pm"),
-            ("check-clean-tree", "../script/clean-source-tree.sh"),
+            ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
             ("clean", "make clean"),
         ],
     },
