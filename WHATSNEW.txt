@@ -1151,6 +1151,14 @@ A number of smb.conf parameters for less-secure authentication methods
 which are only possible over SMBv1 are deprecated in this release.
 
 
+VFS
+---
+
+The effort to modernize Samba's VFS interface has reached a major milestone with
+the next release Samba 4.14.
+
+For details please refer to the documentation at source3/modules/The_New_VFS.txt or
+visit the <https://wiki.samba.org/index.php/The_New_VFS>.
 
 Printing
 --------
