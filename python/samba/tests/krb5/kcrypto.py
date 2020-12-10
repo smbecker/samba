@@ -65,6 +65,7 @@ from samba import generate_random_bytes as get_random_bytes
 from samba.common import get_string, get_bytes
 
 
+
 class Enctype(object):
     DES_CRC = 1
     DES_MD4 = 2
