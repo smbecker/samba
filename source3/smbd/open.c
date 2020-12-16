@@ -5841,7 +5841,6 @@ static NTSTATUS create_file_unixpath(connection_struct *conn,
 		if (!NT_STATUS_IS_OK(status)) {
 			goto fail;
 		}
-		fsp->fsp_name->fsp = fsp;
 	}
 
 	if (base_fsp) {
