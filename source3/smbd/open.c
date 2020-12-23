@@ -1171,7 +1171,6 @@ static NTSTATUS fd_open_atomic(files_struct *fsp,
 }
 
 static NTSTATUS reopen_from_procfd(struct files_struct *fsp,
-				   struct smb_filename *smb_fname,
 				   int flags,
 				   mode_t mode)
 {
@@ -1194,7 +1193,7 @@ static NTSTATUS reopen_from_procfd(struct files_struct *fsp,
 
 	if (!fsp->fsp_flags.is_pathref) {
 		DBG_ERR("[%s] is not a pathref\n",
-			smb_fname_str_dbg(smb_fname));
+			fsp_str_dbg(fsp));
 #ifdef DEVELOPER
 		smb_panic("Not a pathref");
 #endif
@@ -1418,7 +1417,6 @@ static NTSTATUS open_file(files_struct *fsp,
 		 * below under the share mode lock.
 		 */
 		status = reopen_from_procfd(fsp,
-					    smb_fname,
 					    local_flags & ~O_TRUNC,
 					    unx_mode);
 		if (NT_STATUS_EQUAL(status, NT_STATUS_MORE_PROCESSING_REQUIRED))
@@ -4657,7 +4655,7 @@ static NTSTATUS open_directory(connection_struct *conn,
 	flags |= O_DIRECTORY;
 #endif
 
-	status = reopen_from_procfd(fsp, smb_dname, flags, 0);
+	status = reopen_from_procfd(fsp, flags, 0);
 	if (NT_STATUS_EQUAL(status, NT_STATUS_MORE_PROCESSING_REQUIRED)) {
 		bool __unused_file_created = false;
 
