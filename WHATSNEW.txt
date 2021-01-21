@@ -1261,7 +1261,6 @@ CTDB CHANGES
 REMOVED FEATURES
 ================
 
-The deprecated "ldap ssl ads" smb.conf option has been removed.
 
 
 smb.conf changes
@@ -1375,7 +1374,7 @@ o  Martin Schwenke <martin@meltin.net>
 KNOWN ISSUES
 ============
 
-https://wiki.samba.org/index.php/Release_Planning_for_Samba_4.14#Release_blocking_bugs
+https://wiki.samba.org/index.php/Release_Planning_for_Samba_4.15#Release_blocking_bugs
 
 
 #######################################
