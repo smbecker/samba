@@ -81,7 +81,7 @@ static bool dcesrv_auth_prepare_gensec(struct dcesrv_call_state *call)
 {
 	struct dcesrv_connection *dce_conn = call->conn;
 	struct dcesrv_auth *auth = call->auth_state;
-	struct dcesrv_context_callbacks *cb = &call->conn->dce_ctx->callbacks;
+	struct dcesrv_context_callbacks *cb = call->conn->dce_ctx->callbacks;
 	NTSTATUS status;
 
 	if (auth->auth_started) {
@@ -251,7 +251,7 @@ void dcesrv_default_auth_state_prepare_request(struct dcesrv_call_state *call)
 {
 	struct dcesrv_connection *dce_conn = call->conn;
 	struct dcesrv_auth *auth = call->auth_state;
-	struct dcesrv_context_callbacks *cb = &call->conn->dce_ctx->callbacks;
+	struct dcesrv_context_callbacks *cb = call->conn->dce_ctx->callbacks;
 
 	if (auth->auth_audited) {
 		return;
@@ -289,7 +289,7 @@ bool dcesrv_auth_bind(struct dcesrv_call_state *call)
 {
 	struct ncacn_packet *pkt = &call->pkt;
 	struct dcesrv_auth *auth = call->auth_state;
-	struct dcesrv_context_callbacks *cb = &call->conn->dce_ctx->callbacks;
+	struct dcesrv_context_callbacks *cb = call->conn->dce_ctx->callbacks;
 	NTSTATUS status;
 
 	if (pkt->auth_length == 0) {
