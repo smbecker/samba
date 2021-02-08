@@ -787,3 +787,21 @@ WERROR NetProvisionComputerAccount_l(struct libnetapi_ctx *ctx,
 
 	return werr;
 }
+
+/****************************************************************
+****************************************************************/
+
+WERROR NetRequestOfflineDomainJoin_r(struct libnetapi_ctx *ctx,
+				     struct NetRequestOfflineDomainJoin *r)
+{
+	return WERR_NOT_SUPPORTED;
+}
+
+/****************************************************************
+****************************************************************/
+
+WERROR NetRequestOfflineDomainJoin_l(struct libnetapi_ctx *ctx,
+				     struct NetRequestOfflineDomainJoin *r)
+{
+	return WERR_NOT_SUPPORTED;
+}
