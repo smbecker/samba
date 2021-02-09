@@ -2135,11 +2135,8 @@ sub provision($$)
 	my $badnames_shrdir="$shrdir/badnames";
 	push(@dirs,$badnames_shrdir);
 
-	my $lease1_shrdir="$shrdir/SMB2_10";
+	my $lease1_shrdir="$shrdir/dynamic";
 	push(@dirs,$lease1_shrdir);
-
-	my $lease2_shrdir="$shrdir/SMB3_00";
-	push(@dirs,$lease2_shrdir);
 
 	my $manglenames_shrdir="$shrdir/manglenames";
 	push(@dirs,$manglenames_shrdir);
@@ -2712,8 +2709,9 @@ sub provision($$)
 	guest ok = yes
 
 [dynamic_share]
-	path = $shrdir/%R
+	path = $shrdir/dynamic/%t
 	guest ok = yes
+	root preexec = mkdir %P
 
 [widelinks_share]
 	path = $widelinks_shrdir
