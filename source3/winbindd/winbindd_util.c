@@ -1912,7 +1912,7 @@ NTSTATUS normalize_name_map(TALLOC_CTX *mem_ctx,
 ********************************************************************/
 
 NTSTATUS normalize_name_unmap(TALLOC_CTX *mem_ctx,
-			      char *name,
+			      const char *name,
 			      char **normalized)
 {
 	NTSTATUS nt_status;
