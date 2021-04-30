@@ -40,6 +40,8 @@
 
 static PyTypeObject *dom_sid_Type = NULL;
 
+static PyTypeObject *dom_sid_Type = NULL;
+
 static PyTypeObject *get_pytype(const char *module, const char *type)
 {
 	PyObject *mod;
