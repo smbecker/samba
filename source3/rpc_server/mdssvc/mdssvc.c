@@ -517,10 +517,22 @@ bool mds_add_result(struct sl_query *slq, const char *path)
 {
 	struct smb_filename *smb_fname = NULL;
 	struct stat_ex sb;
+	uint32_t attr;
 	uint64_t ino64;
 	int result;
 	NTSTATUS status;
 	bool ok;
+
+	smb_fname = synthetic_smb_fname(talloc_tos(),
+					path,
+					NULL,
+					NULL,
+					0,
+					0);
+	if (smb_fname == NULL) {
+		DBG_ERR("synthetic_smb_fname() failed\n");
+		return false;
+	}
 
 	/*
 	 * We're in a tevent callback which means in the case of
@@ -556,6 +568,7 @@ bool mds_add_result(struct sl_query *slq, const char *path)
 			  smb_fname_str_dbg(smb_fname),
 			  nt_errstr(status));
 		unbecome_authenticated_pipe_user();
+		TALLOC_FREE(smb_fname);
 		return true;
 	}
 
