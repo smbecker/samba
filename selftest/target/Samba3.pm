@@ -2040,6 +2040,7 @@ sub provision($$)
 	my $resolv_conf = $args{resolv_conf};
 	my $no_delete_prefix= $args{no_delete_prefix};
 	my $netbios_name = $args{netbios_name} // $server;
+	my $server_log_level = $ENV{SERVER_LOG_LEVEL} || 1;
 
 	##
 	## setup the various environment variables we need
@@ -2347,7 +2348,7 @@ sub provision($$)
 	pid directory = $piddir
 	lock directory = $lockdir
 	log file = $logdir/log.\%m
-	log level = 1
+	log level = $server_log_level
 	debug pid = yes
         max log size = 0
 
