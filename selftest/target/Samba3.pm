@@ -705,6 +705,7 @@ sub provision_ad_member
 	password server = $dcvars->{SERVER}
 	winbind scan trusted domains = no
 	winbind use krb5 enterprise principals = yes
+	winbind offline logon = $option_offline_logon
 
 	allow dcerpc auth level connect:lsarpc = yes
 	dcesrv:max auth states = 8
