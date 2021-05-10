@@ -1355,7 +1355,8 @@ static bool slrpc_fetch_attributes(struct mds_ctx *mds_ctx,
 
 		result = SMB_VFS_STAT(mds_ctx->conn, smb_fname);
 		if (result != 0) {
-			goto error;
+			TALLOC_FREE(smb_fname);
+			return true;
 		}
 
 		sp = &smb_fname->st;
