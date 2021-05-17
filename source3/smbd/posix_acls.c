@@ -3369,6 +3369,15 @@ NTSTATUS posix_fget_nt_acl(struct files_struct *fsp, uint32_t security_info,
 		def_acl = free_empty_sys_acl(fsp->conn, def_acl);
 	}
 
+	/* If it's a directory get the default POSIX ACL. */
+	if(fsp->fsp_flags.is_directory) {
+		def_acl = SMB_VFS_SYS_ACL_GET_FILE(fsp->conn,
+						   fsp->fsp_name,
+						   SMB_ACL_TYPE_DEFAULT,
+						   frame);
+		def_acl = free_empty_sys_acl(fsp->conn, def_acl);
+	}
+
 	pal = fload_inherited_info(fsp);
 
 	status = posix_get_nt_acl_common(fsp->conn, fsp->fsp_name->base_name,
