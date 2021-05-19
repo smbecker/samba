@@ -2167,7 +2167,7 @@ sub provision($$)
 	push(@dirs,$local_symlinks_shrdir);
 
 	# this gets autocreated by winbindd
-	my $wbsockdir="$prefix_abs/winbindd";
+	my $wbsockdir="$prefix_abs/wbsock";
 
 	my $nmbdsockdir="$prefix_abs/nmbd";
 	unlink($nmbdsockdir);
