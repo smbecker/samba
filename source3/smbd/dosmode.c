@@ -701,6 +701,7 @@ uint32_t fdos_mode(struct files_struct *fsp)
 {
 	uint32_t result = 0;
 	NTSTATUS status = NT_STATUS_OK;
+	enum FAKE_FILE_TYPE fake_file_type;
 
 	if (fsp == NULL) {
 		/*
