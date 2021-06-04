@@ -798,6 +798,10 @@ uint32_t fdos_mode(struct files_struct *fsp)
 
 	DBG_DEBUG("%s\n", fsp_str_dbg(fsp));
 
+	if (fsp->fake_file_handle != NULL) {
+		return dosmode_from_fake_filehandle(fsp->fake_file_handle);
+	}
+
 	if (!VALID_STAT(fsp->fsp_name->st)) {
 		return 0;
 	}
