@@ -695,6 +695,11 @@ sub provision_ad_member
 		$extra_member_options = "";
 	}
 
+	my $netbios_aliases = "";
+	if ($machine_account eq "LOCALADMEMBER") {
+		$netbios_aliases = "netbios aliases = foo bar";
+	}
+
 	my $member_options = "
 	security = ads
         workgroup = $dcvars->{DOMAIN}
