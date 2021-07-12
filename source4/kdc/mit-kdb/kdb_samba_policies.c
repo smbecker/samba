@@ -444,6 +444,7 @@ krb5_error_code kdb_samba_db_sign_auth_data(krb5_context context,
 				  NULL,
 				  &pac);
 		if (code != 0) {
+			DBG_ERR("krb5_find_authdata failed: %d\n", code);
 			goto done;
 		}
 	} else if (with_pac && !is_as_req) {
