@@ -663,7 +663,7 @@ tasks = {
         ],
     },
 
-    "samba-ad-dc-1-mitkrb5": {
+    "samba-addc-mit-1": {
         "dependency": "samba-mit-build",
         "sequence": [
             ("random-sleep", random_sleep(1, 1)),
@@ -679,7 +679,7 @@ tasks = {
         ],
     },
 
-    "samba-ad-dc-4a-mitkrb5": {
+    "samba-addc-mit-4a": {
         "dependency": "samba-mit-build",
         "sequence": [
             ("random-sleep", random_sleep(1, 1)),
@@ -692,7 +692,7 @@ tasks = {
             ("check-clean-tree", CLEAN_SOURCE_TREE_CMD),
         ],
     },
-    "samba-ad-dc-4b-mitkrb5": {
+    "samba-addc-mit-4b": {
         "dependency": "samba-mit-build",
         "sequence": [
             ("random-sleep", random_sleep(1, 1)),
