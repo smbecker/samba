@@ -323,6 +323,16 @@ failed:
 	return status;
 }
 
+/*
+  samr_ChangePasswordUser4
+*/
+NTSTATUS dcesrv_samr_ChangePasswordUser4(struct dcesrv_call_state *dce_call,
+					 TALLOC_CTX *mem_ctx,
+					 struct samr_ChangePasswordUser4 *r)
+{
+	/* TODO */
+	DCESRV_FAULT(DCERPC_FAULT_OP_RNG_ERROR);
+}
 
 /*
   samr_ChangePasswordUser3
