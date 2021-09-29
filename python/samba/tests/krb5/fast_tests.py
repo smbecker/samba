@@ -159,6 +159,8 @@ class FAST_Tests(KDCBaseTest):
         ])
 
     def test_fast_inner_no_sname(self):
+        expected_sname = self.get_krbtgt_sname()
+
         self._run_test_sequence([
             {
                 'rep_type': KRB_AS_REP,
@@ -168,11 +170,14 @@ class FAST_Tests(KDCBaseTest):
                 'gen_armor_tgt_fn': self.get_mach_tgt,
                 'inner_req': {
                     'sname': None  # should be ignored
-                }
+                },
+                'expected_sname': expected_sname
             }
         ])
 
     def test_fast_tgs_inner_no_sname(self):
+        expected_sname = self.get_krbtgt_sname()
+
         self._run_test_sequence([
             {
                 'rep_type': KRB_TGS_REP,
@@ -182,7 +187,8 @@ class FAST_Tests(KDCBaseTest):
                 'fast_armor': None,
                 'inner_req': {
                     'sname': None  # should be ignored
-                }
+                },
+                'expected_sname': expected_sname
             }
         ])
 
