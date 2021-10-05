@@ -779,6 +779,10 @@ sub provision_ad_member
 	$extra_member_options
 	# End extra member options
 
+	# Begin extra member options
+	$extra_member_options
+	# End extra member options
+
 [sub_dug]
 	path = $share_dir/D_%D/U_%U/G_%G
 	writeable = yes
