@@ -701,6 +701,10 @@ sub provision_ad_member
 		$netbios_aliases = "netbios aliases = foo bar";
 	}
 
+	unless (defined($extra_member_options)) {
+		$extra_member_options = "";
+	}
+
 	my $member_options = "
 	security = ads
         workgroup = $dcvars->{DOMAIN}
@@ -1353,6 +1357,44 @@ sub setup_ad_member_no_nss_wb
 					     $trustvars_f,
 					     $trustvars_e,
 					     $extra_member_options,
+					     undef,
+					     1);
+
+	open(USERMAP, ">$prefix/lib/username.map") or die("Unable to open $prefix/lib/username.map");
+	print USERMAP "
+root = $dcvars->{DOMAIN}/root
+";
+	close(USERMAP);
+
+	return $ret;
+}
+
+sub setup_ad_member_no_nss_wb
+{
+	my ($self,
+	    $prefix,
+	    $dcvars,
+	    $trustvars_f,
+	    $trustvars_e) = @_;
+
+	# If we didn't build with ADS, pretend this env was never available
+	if (not $self->have_ads()) {
+	        return "UNKNOWN";
+	}
+
+	print "PROVISIONING AD MEMBER WITHOUT NSS WINBIND...";
+
+	my $extra_member_options = "
+	username map = $prefix/lib/username.map
+";
+
+	my $ret = $self->provision_ad_member($prefix,
+					     "ADMEMNONSSWB",
+					     $dcvars,
+					     $trustvars_f,
+					     $trustvars_e,
+					     $extra_member_options,
+					     undef,
 					     undef,
 					     1);
 
