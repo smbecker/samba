@@ -1243,7 +1243,6 @@ sub setup_ad_member_oneway
 
 	$ret or return undef;
 
-	close(USERMAP);
 	$ret->{DOMAIN} = $dcvars->{DOMAIN};
 	$ret->{REALM} = $dcvars->{REALM};
 	$ret->{DOMSID} = $dcvars->{DOMSID};
