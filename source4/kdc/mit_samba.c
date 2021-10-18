@@ -530,7 +530,6 @@ krb5_error_code mit_samba_reget_pac(struct mit_samba_context *ctx,
 	ssize_t srv_checksum_idx = -1;
 	ssize_t kdc_checksum_idx = -1;
 	krb5_pac new_pac = NULL;
-	bool ok;
 
 	/* Create a memory context early so code can use talloc_stackframe() */
 	tmp_ctx = talloc_named(ctx, 0, "mit_samba_reget_pac context");
