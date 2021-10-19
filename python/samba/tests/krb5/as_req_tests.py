@@ -537,6 +537,9 @@ class AsReqKerberosTests(AsReqBaseTest):
             till='99990913024805Z')
 
 
+        return etype_info2
+
+
 if __name__ == "__main__":
     global_asn1_print = False
     global_hexdump = False
