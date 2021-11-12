@@ -1369,7 +1369,7 @@ root = $dcvars->{DOMAIN}/root
 	return $ret;
 }
 
-sub setup_ad_member_no_nss_wb
+sub setup_ad_member_idmap_nss
 {
 	my ($self,
 	    $prefix,
@@ -1382,14 +1382,23 @@ sub setup_ad_member_no_nss_wb
 	        return "UNKNOWN";
 	}
 
-	print "PROVISIONING AD MEMBER WITHOUT NSS WINBIND...";
+	print "PROVISIONING AD MEMBER WITHOUT NSS WINBIND WITH idmap_nss config...";
 
 	my $extra_member_options = "
+	# bob:x:65521:65531:localbob gecos:/:/bin/false
+	# jane:x:65520:65531:localjane gecos:/:/bin/false
+	idmap config $dcvars->{DOMAIN} : backend = nss
+	idmap config $dcvars->{DOMAIN} : range = 65520-65521
+
+	# Support SMB1 so that we can use posix_whoami().
+	client min protocol = CORE
+	server min protocol = LANMAN1
+
 	username map = $prefix/lib/username.map
 ";
 
 	my $ret = $self->provision_ad_member($prefix,
-					     "ADMEMNONSSWB",
+					     "ADMEMIDMAPNSS",
 					     $dcvars,
 					     $trustvars_f,
 					     $trustvars_e,
@@ -1401,6 +1410,7 @@ sub setup_ad_member_no_nss_wb
 	open(USERMAP, ">$prefix/lib/username.map") or die("Unable to open $prefix/lib/username.map");
 	print USERMAP "
 root = $dcvars->{DOMAIN}/root
+bob = $dcvars->{DOMAIN}/bob
 ";
 	close(USERMAP);
 
@@ -2449,6 +2459,8 @@ sub provision($$)
 	my ($uid_gooduser);
 	my ($uid_eviluser);
 	my ($uid_slashuser);
+	my ($uid_localbob);
+	my ($uid_localjane);
 
 	if ($unix_uid < 0xffff - 13) {
 		$max_uid = 0xffff;
@@ -2469,6 +2481,8 @@ sub provision($$)
 	$uid_gooduser = $max_uid - 11;
 	$uid_eviluser = $max_uid - 12;
 	$uid_slashuser = $max_uid - 13;
+	$uid_localbob = $max_uid - 14;
+	$uid_localjane = $max_uid - 15;
 
 	if ($unix_gids[0] < 0xffff - 8) {
 		$max_gid = 0xffff;
@@ -3210,6 +3224,8 @@ user2:x:$uid_user2:$gid_nogroup:user2 gecos:$prefix_abs:/bin/false
 gooduser:x:$uid_gooduser:$gid_domusers:gooduser gecos:$prefix_abs:/bin/false
 eviluser:x:$uid_eviluser:$gid_domusers:eviluser gecos::/bin/false
 slashuser:x:$uid_slashuser:$gid_domusers:slashuser gecos:/:/bin/false
+bob:x:$uid_localbob:$gid_domusers:localbob gecos:/:/bin/false
+jane:x:$uid_localjane:$gid_domusers:localjane gecos:/:/bin/false
 ";
 	if ($unix_uid != 0) {
 		print PASSWD "root:x:$uid_root:$gid_root:root gecos:$prefix_abs:/bin/false
