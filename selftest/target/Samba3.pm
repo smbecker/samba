@@ -912,6 +912,28 @@ sub setup_ad_member
 					  $trustvars_e);
 }
 
+sub setup_ad_member_s3_join
+{
+        my ($self,
+            $prefix,
+            $dcvars,
+            $trustvars_f,
+            $trustvars_e) = @_;
+
+        # If we didn't build with ADS, pretend this env was never available
+        if (not $self->have_ads()) {
+                return "UNKNOWN";
+        }
+
+        print "PROVISIONING AD MEMBER...";
+
+        return $self->provision_ad_member($prefix,
+                                          "LOCALADMEMBER2",
+                                          $dcvars,
+                                          $trustvars_f,
+                                          $trustvars_e);
+}
+
 sub setup_ad_member_rfc2307
 {
 	my ($self, $prefix, $dcvars) = @_;
