@@ -961,7 +961,6 @@ int file_set_dosmode(connection_struct *conn,
 	mode_t tmp;
 	mode_t unixmode;
 	int ret = -1, lret = -1;
-	files_struct *fsp = NULL;
 	NTSTATUS status;
 
 	if (!CAN_WRITE(conn)) {
@@ -1099,7 +1098,7 @@ int file_set_dosmode(connection_struct *conn,
 	}
 
 	become_root();
-	ret = SMB_VFS_FCHMOD(fsp, unixmode);
+	ret = SMB_VFS_FCHMOD(smb_fname->fsp, unixmode);
 	unbecome_root();
 
 	if (!newfile) {
