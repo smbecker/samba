@@ -274,7 +274,7 @@ NTSTATUS dcesrv_samr_OemChangePasswordUser2(struct dcesrv_call_state *dce_call,
 				    user_dn, NULL,
 				    &new_unicode_password,
 				    NULL, NULL,
-				    lm_pwd, NULL, /* this is a user password change */
+				    DSDB_PASSWORD_CHECKED_AND_CORRECT,
 				    NULL,
 				    NULL);
 	if (!NT_STATUS_IS_OK(status)) {
@@ -497,7 +497,7 @@ NTSTATUS dcesrv_samr_ChangePasswordUser3(struct dcesrv_call_state *dce_call,
 				    user_dn, NULL,
 				    &new_password,
 				    NULL, NULL,
-				    lm_pwd, nt_pwd, /* this is a user password change */
+				    DSDB_PASSWORD_CHECKED_AND_CORRECT,
 				    &reason,
 				    &dominfo);
 
@@ -659,8 +659,7 @@ NTSTATUS samr_set_password(struct dcesrv_call_state *dce_call,
 				       &new_password,
 				       NULL,
 				       NULL,
-				       NULL,
-				       NULL, /* This is a password set, not change */
+				       DSDB_PASSWORD_RESET,
 				       NULL,
 				       NULL);
 out:
@@ -731,8 +730,7 @@ NTSTATUS samr_set_password_ex(struct dcesrv_call_state *dce_call,
 				       &new_password,
 				       NULL,
 				       NULL,
-				       NULL,
-				       NULL, /* This is a password set, not change */
+				       DSDB_PASSWORD_RESET,
 				       NULL,
 				       NULL);
 	ZERO_ARRAY_LEN(new_password.data,
@@ -808,7 +806,7 @@ NTSTATUS samr_set_password_buffers(struct dcesrv_call_state *dce_call,
 		nt_status = samdb_set_password(sam_ctx, mem_ctx, account_dn,
 					       domain_dn, NULL,
 					       d_lm_pwd_hash, d_nt_pwd_hash,
-					       NULL, NULL, /* this is a password set */
+					       DSDB_PASSWORD_RESET,
 					       NULL, NULL);
 	}
 
