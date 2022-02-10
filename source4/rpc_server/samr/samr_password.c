@@ -98,6 +98,8 @@ NTSTATUS dcesrv_samr_ChangePasswordUser(struct dcesrv_call_state *dce_call,
 
 /*
   samr_OemChangePasswordUser2
+
+  No longer implemented as it requires the LM hash
 */
 NTSTATUS dcesrv_samr_OemChangePasswordUser2(struct dcesrv_call_state *dce_call,
 					    TALLOC_CTX *mem_ctx,
@@ -342,12 +344,12 @@ NTSTATUS dcesrv_samr_ChangePasswordUser3(struct dcesrv_call_state *dce_call,
 				       "msDS-User-Account-Control-Computed",
 				       "badPwdCount", "badPasswordTime",
 				       "objectSid", NULL };
-	struct samr_Password *nt_pwd, *lm_pwd;
+	struct samr_Password *nt_pwd;
 	struct samr_DomInfo1 *dominfo = NULL;
 	struct userPwdChangeFailureInformation *reject = NULL;
 	enum samPwdChangeReason reason = SAM_PWD_CHANGE_NO_ERROR;
-	uint8_t new_nt_hash[16], new_lm_hash[16];
-	struct samr_Password nt_verifier, lm_verifier;
+	uint8_t new_nt_hash[16];
+	struct samr_Password nt_verifier;
 	const char *user_samAccountName = NULL;
 	struct dom_sid *user_objectSid = NULL;
 	enum ntlm_auth_level ntlm_auth_level
@@ -395,7 +397,7 @@ NTSTATUS dcesrv_samr_ChangePasswordUser3(struct dcesrv_call_state *dce_call,
 	user_objectSid = samdb_result_dom_sid(res, res[0], "objectSid");
 
 	status = samdb_result_passwords(mem_ctx, dce_call->conn->dce_ctx->lp_ctx,
-					res[0], &lm_pwd, &nt_pwd);
+					res[0], NULL, &nt_pwd);
 	if (!NT_STATUS_IS_OK(status) ) {
 		goto failed;
 	}
@@ -451,31 +453,6 @@ NTSTATUS dcesrv_samr_ChangePasswordUser3(struct dcesrv_call_state *dce_call,
 	if (memcmp(nt_verifier.hash, r->in.nt_verifier->hash, 16) != 0) {
 		status = NT_STATUS_WRONG_PASSWORD;
 		goto failed;
-	}
-
-	/* check LM verifier (really not needed as we just checked the
-	 * much stronger NT hash, but the RPC-SAMR test checks for
-	 * this) */
-	if (lm_pwd && r->in.lm_verifier != NULL) {
-		char *new_pass;
-		size_t converted_size = 0;
-
-		if (!convert_string_talloc_handle(mem_ctx, lpcfg_iconv_handle(dce_call->conn->dce_ctx->lp_ctx),
-					  CH_UTF16, CH_UNIX,
-					  (const char *)new_password.data,
-					  new_password.length,
-					  (void **)&new_pass, &converted_size)) {
-			E_deshash(new_pass, new_lm_hash);
-			rc = E_old_pw_hash(new_nt_hash, lm_pwd->hash, lm_verifier.hash);
-			if (rc != 0) {
-				status = gnutls_error_to_ntstatus(rc, NT_STATUS_ACCESS_DISABLED_BY_POLICY_OTHER);
-				goto failed;
-			}
-			if (memcmp(lm_verifier.hash, r->in.lm_verifier->hash, 16) != 0) {
-				status = NT_STATUS_WRONG_PASSWORD;
-				goto failed;
-			}
-		}
 	}
 
 	/* Connect to a SAMDB with user privileges for the password change */
