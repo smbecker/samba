@@ -1359,7 +1359,7 @@ static bool slrpc_fetch_attributes(struct mds_ctx *mds_ctx,
 			return true;
 		}
 
-		sp = &smb_fname->st;
+		sp = &smb_fname->fsp->fsp_name->st;
 	}
 
 	ok = add_filemeta(mds_ctx, reqinfo, fm_array, path, sp);
