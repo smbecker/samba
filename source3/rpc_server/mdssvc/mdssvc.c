@@ -517,7 +517,6 @@ bool mds_add_result(struct sl_query *slq, const char *path)
 {
 	struct smb_filename *smb_fname = NULL;
 	struct stat_ex sb;
-	uint32_t attr;
 	uint64_t ino64;
 	int result;
 	NTSTATUS status;
@@ -571,7 +570,6 @@ bool mds_add_result(struct sl_query *slq, const char *path)
 					  false,
 					  FILE_READ_DATA);
 	if (!NT_STATUS_IS_OK(status)) {
-		unbecome_authenticated_pipe_user();
 		TALLOC_FREE(smb_fname);
 		return true;
 	}
@@ -591,6 +589,7 @@ bool mds_add_result(struct sl_query *slq, const char *path)
 
 	sb = smb_fname->st;
 	TALLOC_FREE(smb_fname);
+
 	ino64 = SMB_VFS_FS_FILE_ID(slq->mds_ctx->conn, &sb);
 
 	if (slq->cnids) {
