@@ -433,11 +433,17 @@ sec_desc_parse(TALLOC_CTX *ctx,
         struct dom_sid *owner_sid=NULL;
 	struct security_acl *dacl=NULL;
 	int revision=1;
+	uint16_t type=SEC_DESC_SELF_RELATIVE;
 
 	while (next_token_talloc(ctx, &p, &tok, "\t,\r\n")) {
 
 		if (strncasecmp_m(tok,"REVISION:", 9) == 0) {
 			revision = strtol(tok+9, NULL, 16);
+			continue;
+		}
+
+		if (strncasecmp_m(tok,"CONTROL:", 8) == 0) {
+			type = strtol(tok+8, NULL, 0);
 			continue;
 		}
 
@@ -535,8 +541,8 @@ sec_desc_parse(TALLOC_CTX *ctx,
 		goto done;
 	}
 
-	ret = make_sec_desc(ctx, revision, SEC_DESC_SELF_RELATIVE, 
-			    owner_sid, group_sid, NULL, dacl, &sd_size);
+	ret = make_sec_desc(ctx, revision, type,
+				owner_sid, group_sid, NULL, dacl, &sd_size);
 
 done:
 	SAFE_FREE(group_sid);
@@ -939,6 +945,30 @@ cacl_get(SMBCCTX *context,
                                         n = snprintf(buf, bufsize, "%d",
                                                      sd->revision);
                                 }
+                        }
+
+                        if (!determine_size && n > bufsize) {
+                                errno = ERANGE;
+                                return -1;
+                        }
+                        buf += n;
+                        n_used += n;
+                        bufsize -= n;
+                        n = 0;
+                }
+
+                if (all || all_nt) {
+                        if (determine_size) {
+                                p = talloc_asprintf(ctx, ",CONTROL:0x%x",
+                                                         sd->type);
+                                if (!p) {
+                                        errno = ENOMEM;
+                                        return -1;
+                                }
+                                n = strlen(p);
+                        } else if (sidstr[0] != '\0') {
+                                n = snprintf(buf, bufsize,
+                                                  ",CONTROL:0x%x", sd->type);
                         }
 
                         if (!determine_size && n > bufsize) {
@@ -1675,7 +1705,7 @@ cacl_set(SMBCCTX *context,
 	sort_acl(old->dacl);
 
 	/* Create new security descriptor and set it */
-	sd = make_sec_desc(ctx, old->revision, SEC_DESC_SELF_RELATIVE,
+	sd = make_sec_desc(ctx, old->revision, sd->type,
 			   owner_sid, group_sid, NULL, dacl, &sd_size);
 
 	status = cli_ntcreate(targetcli, targetpath, 0,
