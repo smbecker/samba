@@ -1007,6 +1007,7 @@ krb5_environ = {
     'EXPECT_EXTRA_PAC_BUFFERS': extra_pac_buffers,
     'CHECK_CNAME': check_cname,
     'CHECK_PADATA': check_padata,
+    'KADMIN_IS_TGS': kadmin_is_tgs,
 }
 planoldpythontestsuite("none", "samba.tests.krb5.kcrypto")
 planoldpythontestsuite("ad_dc_default", "samba.tests.krb5.simple_tests",
