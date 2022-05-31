@@ -1703,6 +1703,9 @@ sub setup_fileserver
 	push(@dirs, "$delete_unwrite_sharedir/delete_veto_yes");
 	push(@dirs, "$delete_unwrite_sharedir/delete_veto_no");
 
+	my $volume_serial_number_sharedir="$share_dir/volume_serial_number";
+	push(@dirs, $volume_serial_number_sharedir);
+
 	my $ip4 = Samba::get_ipv4_addr("FILESERVER");
 	my $fileserver_options = "
 	kernel change notify = yes
@@ -1847,6 +1850,10 @@ sub setup_fileserver
 	virusfilter:infected files = *infected*
 	virusfilter:infected file action = rename
 	virusfilter:scan on close = yes
+
+[volumeserialnumber]
+	path = $volume_serial_number_sharedir
+	volume serial number = 0xdeadbeef
 
 [homes]
 	comment = Home directories
