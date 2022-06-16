@@ -3316,6 +3316,14 @@ sub provision($$)
 [acls_non_canonical]
 	copy = tmp
 	acl flag inherited canonicalization = no
+
+[full_audit_success_bad_name]
+	copy = tmp
+	full_audit:success = badname
+
+[full_audit_fail_bad_name]
+	copy = tmp
+	full_audit:failure = badname
 	";
 
 	close(CONF);
