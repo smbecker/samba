@@ -1004,6 +1004,7 @@ krb5_environ = {
     'CLAIMS_SUPPORT': claims_support,
     'COMPOUND_ID_SUPPORT': compound_id_support,
     'TKT_SIG_SUPPORT': tkt_sig_support,
+    'GNUTLS_PBKDF2_SUPPORT': gnutls_pbkdf2_support,
     'EXPECT_PAC': expect_pac,
     'EXPECT_EXTRA_PAC_BUFFERS': extra_pac_buffers,
     'CHECK_CNAME': check_cname,
@@ -1706,6 +1707,10 @@ for env, nt_hash in [("ad_dc:local", True),
 planoldpythontestsuite(
     'ad_dc',
     'samba.tests.krb5.kpasswd_tests',
+    environ=krb5_environ)
+planoldpythontestsuite(
+    'ad_dc:local',
+    'samba.tests.krb5.lockout_tests',
     environ=krb5_environ)
 
 for env in [
