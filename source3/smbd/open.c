@@ -4767,7 +4767,9 @@ static NTSTATUS open_directory(connection_struct *conn,
 	return NT_STATUS_OK;
 }
 
-NTSTATUS create_directory(connection_struct *conn, struct smb_request *req,
+NTSTATUS create_directory(connection_struct *conn,
+			  struct smb_request *req,
+			  struct files_struct *dirfsp,
 			  struct smb_filename *smb_dname)
 {
 	NTSTATUS status;
@@ -4776,7 +4778,7 @@ NTSTATUS create_directory(connection_struct *conn, struct smb_request *req,
 	status = SMB_VFS_CREATE_FILE(
 		conn,					/* conn */
 		req,					/* req */
-		NULL,					/* dirfsp */
+		dirfsp,					/* dirfsp */
 		smb_dname,				/* fname */
 		FILE_READ_ATTRIBUTES,			/* access_mask */
 		FILE_SHARE_NONE,			/* share_access */
