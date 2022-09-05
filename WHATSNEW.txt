@@ -1465,6 +1465,7 @@ LanMan Authentication and password storage removed from the AD DC
 The storage and authentication with LanMan passwords has been entirely
 removed from the Samba AD DC, even when "lanman auth = yes" is set.
 
+
 smb.conf changes
 ================
 
